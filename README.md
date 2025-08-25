@@ -1,105 +1,63 @@
-# CrowdWisdomTrading AI Agent — Starter (Beginner Friendly)
+# MarketFlow Assignment
 
-This repo is a **from-zero** starter for the assessment (CrewAI Poly task).
-It is designed so you can first build a working rule‑based app, then (optionally)
-wrap it with **CrewAI** agents.
+This project collects prediction market data from multiple sources, unifies the product names, and exports them to a CSV file.
 
 ---
 
-## 0) Prereqs
+## 1) Prerequisites
 - Python 3.10+
 - VS Code (recommended)
-- (Optional) OpenAI or Groq API key if you want to run the CrewAI version
 
 ---
 
-## 1) Create & activate a virtual environment
+## 2) Setup
+Clone the repository:
 ```bash
-# Windows (PowerShell)
+git clone https://github.com/Atharvak09/marketflow-assignment.git
+cd marketflow-assignment
+
+Create and activate a virtual environment:
+# Windows
 python -m venv .venv
 .\.venv\Scripts\activate
 
 # macOS/Linux
 python3 -m venv .venv
 source .venv/bin/activate
-```
 
-## 2) Install dependencies
-```bash
+Install dependencies:
 pip install -r requirements.txt
-```
 
-> If you want to use CrewAI with an LLM, set an API key (optional):
-```bash
-# OpenAI example
-setx OPENAI_API_KEY "sk-..."
-# or on macOS/Linux:
-export OPENAI_API_KEY="sk-..."
-```
+Run the Flow
+python -m src.market_flow
 
-## 3) Run the **working rule-based app** (no LLM needed)
-The app fetches markets from **PredictIt** and **Manifold**, stores them in SQLite,
-does fuzzy title matching, and finds simple opportunities where one site's "Yes" price
-is **lower** than another site's implied probability by a threshold.
 
-```bash
-python src/main.py --keywords "election, trump, biden" --threshold 0.12
-```
+Example Output
+Console output:
+✅ Collected Data: [
+  {'site': 'polymarket.com', 'product': 'Trump wins 2024', 'price': 0.62},
+  {'site': 'kalshi.com', 'product': 'Trump wins election 2024', 'price': 0.6},
+  {'site': 'prediction-market.com', 'product': 'Biden wins 2024', 'price': 0.45},
+  {'site': 'polymarket.com', 'product': 'Biden wins election 2024', 'price': 0.38}
+]
 
-- Results are printed and also saved to `./out/opportunities.csv`.
-- Data is stored in `./out/markets.db` (SQLite).
+✅ Unified Products: {
+  'Trump wins 2024': [
+    {'site': 'polymarket.com', 'price': 0.62},
+    {'site': 'kalshi.com', 'price': 0.6}
+  ],
+  'Biden wins 2024': [
+    {'site': 'prediction-market.com', 'price': 0.45},
+    {'site': 'polymarket.com', 'price': 0.38}
+  ]
+}
 
-> Tip: Use broader or narrower keywords to control how many markets are compared.
+CSV generated:
+output_products.csv
 
-## 4) (Optional) Run the **CrewAI** wrapper
-This wraps the same logic into 3 agents:
-- Scraper Agent → pulls data
-- Analyst Agent → compares odds & finds edges
-- Strategy Agent → proposes a simple bet plan
-
-```bash
-python src/run_crewai.py --keywords "election" --threshold 0.12
-```
-
-You’ll need an API key (e.g., `OPENAI_API_KEY` or `GROQ_API_KEY`) to run this.
-If you don’t have one, **skip this step** — the rule-based app is enough to submit.
-
----
-
-## 5) Project structure
-```
-src/
-  main.py                  # rule-based CLI app (works without LLM)
-  run_crewai.py            # optional CrewAI wrapper (needs API key)
-  data_sources/
-    predictit.py           # pulls public JSON from PredictIt
-    manifold.py            # pulls public JSON from Manifold
-  storage/
-    db.py                  # SQLite with SQLAlchemy
-  agents/
-    crew_setup.py          # roles, tasks, crew wiring
-    tools.py               # bridge tools used by CrewAI agents
-  utils/
-    matching.py            # fuzzy match helper
-    types.py               # common dataclasses
-requirements.txt
-README.md
-```
-
----
-
-## 6) What to submit (suggested)
-- A short demo video (screen recording) showing:
-  1. `python src/main.py ...` runs and prints opportunities
-  2. (Optional) `python src/run_crewai.py ...` producing a plan
-- `opportunities.csv` produced by your run
-- A short README note describing your approach
-
----
-
-## 7) Notes & Ethics
-- We use **public** JSON APIs for PredictIt and Manifold to avoid heavy scraping.
-- Respect site terms and rate limits; this is **read-only** research.
-- This starter focuses on **binary** markets for simplicity.
-
-Good luck — you got this! 🚀
+Sample output_products.csv:
+Product,Site,Price
+Trump wins 2024,polymarket.com,0.62
+Trump wins 2024,kalshi.com,0.60
+Biden wins 2024,prediction-market.com,0.45
+Biden wins 2024,polymarket.com,0.38
