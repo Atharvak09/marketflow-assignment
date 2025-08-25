@@ -34,14 +34,14 @@ python -m src.market_flow
 
 Example Output
 Console output:
-✅ Collected Data: [
+ Collected Data: [
   {'site': 'polymarket.com', 'product': 'Trump wins 2024', 'price': 0.62},
   {'site': 'kalshi.com', 'product': 'Trump wins election 2024', 'price': 0.6},
   {'site': 'prediction-market.com', 'product': 'Biden wins 2024', 'price': 0.45},
   {'site': 'polymarket.com', 'product': 'Biden wins election 2024', 'price': 0.38}
 ]
 
-✅ Unified Products: {
+ Unified Products: {
   'Trump wins 2024': [
     {'site': 'polymarket.com', 'price': 0.62},
     {'site': 'kalshi.com', 'price': 0.6}
