@@ -1,0 +1,11 @@
+pandas==2.2.2
+requests>=2.32.3
+rapidfuzz>=3.9.6
+SQLAlchemy>=2.0.32
+python-dotenv>=1.0.1
+
+# Optional (CrewAI wrapper)
+crewai>=0.56.0
+langchain>=0.2.14
+langchain-community>=0.2.12
+pydantic>=2.8.2
